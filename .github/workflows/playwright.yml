@@ -23,6 +23,10 @@ jobs:
       run: npx playwright install --with-deps
     - name: Run Playwright tests
       run: npx playwright test --shard=${{ matrix.shard }}
+      env:
+        SAUCE_USERNAME: ${{ secrets.SAUCE_USERNAME }}
+        SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD }}
+        BASE_URL: https://www.saucedemo.com
     - uses: actions/upload-artifact@v4
       if: always()
       with:
