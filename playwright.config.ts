@@ -79,6 +79,10 @@
 // });
 
 import { defineConfig, devices } from '@playwright/test';
+import dotenv from 'dotenv';
+import path from 'path';
+
+dotenv.config({ path: path.resolve(__dirname, '.env') });
 
 export default defineConfig({
   testDir: './tests',
@@ -88,8 +92,9 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   use: {
+    baseURL: process.env.BASE_URL,
     trace: 'on-first-retry',
-    testIdAttribute: 'data-test', // 👈 tells Playwright to use data-test instead of data-testid
+    testIdAttribute: 'data-test',
   },
   projects: [
     {
