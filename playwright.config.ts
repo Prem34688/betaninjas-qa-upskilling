@@ -95,11 +95,16 @@ export default defineConfig({
     baseURL: process.env.BASE_URL,
     trace: 'on-first-retry',
     testIdAttribute: 'data-test',
+    ignoreHTTPSErrors: true,
   },
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: {
+        ...devices['Desktop Chrome'],
+        executablePath: process.env.CHROMIUM_EXECUTABLE_PATH ||
+          '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
+      },
     },
     {
       name: 'firefox',
