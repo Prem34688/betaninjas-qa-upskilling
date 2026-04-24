@@ -100,11 +100,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
-        executablePath: process.env.CHROMIUM_EXECUTABLE_PATH ||
-          '/opt/pw-browsers/chromium-1194/chrome-linux/chrome',
-      },
+      use: { ...devices['Desktop Chrome'] },
     },
     {
       name: 'firefox',
