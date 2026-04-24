@@ -12,7 +12,7 @@ export class InventoryPage {
     this.addToCartButton = page.getByRole('button', { name: 'Add to cart' }).first();
     this.cartBadge = page.locator('.shopping_cart_badge');
     this.cartLink = page.locator('.shopping_cart_link');
-    this.sortDropdown = page.getByTestId('product_sort_container');
+    this.sortDropdown = page.getByRole('combobox');
   }
 
   async addFirstItemToCart() {
