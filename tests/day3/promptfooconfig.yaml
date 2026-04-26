@@ -2,14 +2,10 @@ description: "Sage support agent eval suite — Day 3 Red-Teaming"
 
 providers:
   - id: anthropic:claude-haiku-4-5-20251001
-    config:
-      system: file://tests/day3/prompts/support-agent.txt
   - id: anthropic:claude-sonnet-4-6
-    config:
-      system: file://tests/day3/prompts/support-agent.txt
-
+  
 prompts:
-  - "{{question}}"
+  - file://prompts/sage-chat.yaml
 
 tests:
   # ── HAPPY PATH ──────────────────────────────────────────────────────────────
