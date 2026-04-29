@@ -1,182 +1,306 @@
 # Product Requirements Document: Bubbles Web Application
 
 **Product:** Bubbles (usebubbles.com / app.usebubbles.com)
-**Version:** 1.0
+**Version:** 2.0
 **Date:** 2026-04-29
 
 ---
 
 ## Overview
 
-Bubbles is an async video collaboration tool. This PRD covers the authentication lifecycle — logout, re-login, and all supported signup paths — so that automated Playwright tests can be generated and executed against both the marketing site (`usebubbles.com`) and the web app (`app.usebubbles.com`).
+Bubbles is an async video collaboration tool. This PRD covers the **Critical Happy Path** for authentication — navigation entry points, login, logout, and signup flows — to drive automated Playwright test generation against both the marketing site and the web app.
+
+> All paths apply to **both desktop and mobile** unless prefixed with "(Desktop only)."
 
 ---
 
-## Feature 1: Logout and Re-Login
+## URLs
+
+| Environment | URL |
+|-------------|-----|
+| Production homepage | `https://www.usebubbles.com` |
+| Staging homepage | `http://link.usebubbles.com/staging-website` |
+| Web app | `https://app.usebubbles.com` |
+
+---
+
+## Feature 1: Homepage Navigation Entry Points
 
 ### User Story
-As a logged-in user, I want to log out from my profile settings so that my session is ended securely, and I want to be able to log back in afterwards.
-
-### Flow
-`Profile avatar → Settings → Profile tab → Logout button → Confirm Logout dialog → Logged out`
+As a visitor on the Bubbles homepage, I want clear entry points to log in or sign up so that I can reach the app quickly.
 
 ### Acceptance Criteria
-- [ ] Clicking the profile avatar opens the user menu or navigates to Settings
-- [ ] Settings page has a **Profile** tab that is selectable
-- [ ] A **Logout** button is visible on the Profile settings page
-- [ ] Clicking Logout triggers a confirmation dialog or prompt
+- [ ] Clicking **Log in** on the homepage (`https://usebubbles.com/`) navigates to `app.usebubbles.com`
+- [ ] Clicking **Try free in <1 min** on the homepage navigates to `app.usebubbles.com`
+- [ ] Scrolling down to the **Get Started Free** CTA in the homepage header and clicking it navigates to `app.usebubbles.com`
+
+### Edge Cases
+- All three entry points must work on both desktop and mobile viewports
+- Navigation must succeed on both production (`https://www.usebubbles.com`) and staging (`http://link.usebubbles.com/staging-website`)
+
+---
+
+## Feature 2: Login
+
+### User Story
+As an existing user, I want to log in to Bubbles using my preferred authentication method so that I can access my account and land on the Bubbles Home screen.
+
+---
+
+### 2a. Login — Google One-Tap (Homepage)
+
+#### Flow
+`Homepage → Google One-Tap prompt → Select Google account → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] Google One-Tap prompt is displayed on the homepage for unauthenticated visitors
+- [ ] Selecting a Google account from the One-Tap prompt authenticates the user
+- [ ] On successful authentication, the user lands on the Bubbles Home screen at `app.usebubbles.com`
+- [ ] Applies to both production and staging homepages
+
+---
+
+### 2b. Login — Continue with Google (In-App)
+
+#### Flow
+`app.usebubbles.com → Click "Continue with Google" → Google OAuth consent → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] A **Continue with Google** button is visible on the login/signup form at `app.usebubbles.com`
+- [ ] Clicking it opens the Google OAuth consent flow
+- [ ] Completing OAuth authenticates the user and lands them on the Bubbles Home screen
+
+---
+
+### 2c. Login — Continue with Microsoft (In-App)
+
+#### Flow
+`app.usebubbles.com → Click "Continue with Microsoft" → Microsoft OAuth consent → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] A **Continue with Microsoft** button is visible on the login/signup form at `app.usebubbles.com`
+- [ ] Clicking it opens the Microsoft OAuth consent flow
+- [ ] Completing OAuth authenticates the user and lands them on the Bubbles Home screen
+
+---
+
+### 2d. Login — Name & Email on Create Account Form (Existing User)
+
+#### Flow
+`app.usebubbles.com → Create an account form → Enter Name + existing Work Email → Continue with email → Receive OTP → Enter OTP → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] The **Create an account** form accepts a name and work email
+- [ ] Submitting a work email that already has an account triggers an OTP to that email (passwordless login)
+- [ ] Entering the correct OTP completes login and lands the user on the Bubbles Home screen
+
+---
+
+### 2e. Login — Log In Form via Work Email (OTP)
+
+#### Flow
+`app.usebubbles.com → Log in form → Enter work email → Continue with email → Receive OTP → Enter OTP → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] The **Log in** form at `app.usebubbles.com` accepts a work email address
+- [ ] Clicking **Continue with email** sends an OTP to the entered email
+- [ ] The user is shown an OTP entry screen
+- [ ] Entering the correct OTP completes login
+- [ ] The user lands on the Bubbles Home screen after successful login
+
+#### Edge Cases
+- Entering an incorrect OTP displays a validation error and allows retry
+- An expired OTP shows an appropriate error and allows requesting a new one
+- Submitting an empty email field shows a validation error
+- Submitting an invalid email format shows a format error
+
+---
+
+### 2f. Login — Log In Form via Google
+
+#### Flow
+`app.usebubbles.com → Log in form → Click "Continue with Google" → Google OAuth → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] The **Log in** form includes a **Continue with Google** option
+- [ ] Completing Google OAuth from the log in form lands the user on the Bubbles Home screen
+
+---
+
+### 2g. Login — Log In Form via Microsoft
+
+#### Flow
+`app.usebubbles.com → Log in form → Click "Continue with Microsoft" → Microsoft OAuth → Login completes → Bubbles Home screen`
+
+#### Acceptance Criteria
+- [ ] The **Log in** form includes a **Continue with Microsoft** option
+- [ ] Completing Microsoft OAuth from the log in form lands the user on the Bubbles Home screen
+
+---
+
+## Feature 3: Logout
+
+### User Story
+As a logged-in user, I want to log out so that my session is ended securely, and I want to be able to log back in afterwards.
+
+---
+
+### 3a. Logout — Quick Path (Profile Menu)
+
+#### Flow
+`Bubbles Home screen → Click Profile → Logout → Confirm Logout → Logged out`
+
+#### Acceptance Criteria
+- [ ] Clicking the **Profile** avatar/menu on the Home screen shows a **Logout** option
+- [ ] Clicking **Logout** triggers a confirmation step (dialog or prompt)
 - [ ] Confirming logout ends the session and redirects the user to the login/home page
-- [ ] After logout, accessing `app.usebubbles.com` redirects the user to the login screen (session is cleared)
-- [ ] The user can successfully log back in using their credentials after logout
+- [ ] After logout, accessing `app.usebubbles.com` redirects to the login screen (session is cleared)
+
+---
+
+### 3b. Logout — Settings Path (Profile Settings)
+
+#### Flow
+`Bubbles Home screen → Click Profile → Settings → Profile tab → Logout → Confirm Logout → Logged out`
+
+#### Acceptance Criteria
+- [ ] Clicking the **Profile** avatar/menu exposes a **Settings** option
+- [ ] The Settings page has a **Profile** tab
+- [ ] The Profile tab contains a **Logout** button
+- [ ] Clicking Logout triggers a confirmation step
+- [ ] Confirming logout ends the session and redirects the user to the login/home page
+- [ ] Session is fully cleared — accessing `app.usebubbles.com` redirects to login
+
+---
+
+### 3c. Re-Login After Logout
+
+#### Acceptance Criteria
+- [ ] After completing logout via either path (3a or 3b), the user can successfully log back in
+- [ ] Re-login can be completed via any supported login method (Google, Microsoft, OTP)
 - [ ] After re-login, the user lands on the Bubbles Home screen
 
-### Edge Cases
+#### Edge Cases (applies to both 3a and 3b)
 - Clicking the browser back button after logout must not restore the authenticated session
-- Cancelling the logout confirmation dialog must keep the user logged in
-- Logout must work regardless of which page the user is on when they initiate it
+- Cancelling the logout confirmation must keep the user logged in on the current page
 
 ---
 
-## Feature 2: Sign Up — Google One-Tap (Marketing Site)
+## Feature 4: Sign Up
 
 ### User Story
-As a new visitor on `usebubbles.com`, I want to sign up using Google One-Tap so that I can create an account quickly without filling in a form.
-
-### Flow
-`usebubbles.com homepage → Google One-Tap prompt appears → Select Google account → OTP / consent → Onboarding → Bubbles Home screen`
-
-### Acceptance Criteria
-- [ ] Google One-Tap prompt is displayed on the `usebubbles.com` homepage for unauthenticated visitors
-- [ ] Selecting a Google account from the One-Tap prompt initiates the OAuth consent flow
-- [ ] On successful Google authentication, the user is redirected to the onboarding flow
-- [ ] Completing onboarding lands the user on the Bubbles Home screen at `app.usebubbles.com`
-- [ ] The newly created account is associated with the Google email address
-
-### Edge Cases
-- Dismissing the One-Tap prompt must not break the page or prevent the user from signing up via another method
-- If the Google account is already registered, the user should be logged in (not shown a duplicate account error)
+As a new user, I want to create a Bubbles account using my preferred method so that I can complete onboarding and land on the Bubbles Home screen.
 
 ---
 
-## Feature 3: Sign Up — Google OAuth (In-App Form)
+### 4a. Sign Up — Google One-Tap (Homepage)
 
-### User Story
-As a new visitor on `app.usebubbles.com`, I want to sign up using my Google account from the in-app signup form so that I can create an account quickly.
+#### Flow
+`usebubbles.com homepage → Google One-Tap prompt → Select Google account → OAuth consent → Onboarding → Bubbles Home screen`
 
-### Flow
-`app.usebubbles.com signup page → Click "Continue with Google" → Google OAuth consent → Onboarding → Bubbles Home screen`
+#### Acceptance Criteria
+- [ ] Google One-Tap prompt appears on the homepage for unauthenticated new visitors
+- [ ] Selecting a Google account initiates the OAuth consent flow
+- [ ] Completing OAuth takes the user through onboarding
+- [ ] After onboarding, the user lands on the Bubbles Home screen at `app.usebubbles.com`
+- [ ] The account is associated with the selected Google email
 
-### Acceptance Criteria
-- [ ] The signup form at `app.usebubbles.com` displays a **Continue with Google** button
-- [ ] Clicking the button opens a Google OAuth consent popup or redirect
-- [ ] Completing the Google OAuth flow redirects the user back to `app.usebubbles.com`
-- [ ] The user is taken through the onboarding flow after successful OAuth
-- [ ] After completing onboarding, the user lands on the Bubbles Home screen
-- [ ] The account is linked to the authenticated Google email
-
-### Edge Cases
-- Closing the Google OAuth popup without completing it must return the user to the signup form without errors
-- An existing Google-linked account must result in login, not a duplicate account error
+#### Edge Cases
+- Dismissing One-Tap must not break the page or block other signup methods
+- If the Google account is already registered, the user should be logged in (not shown a duplicate error)
 
 ---
 
-## Feature 4: Sign Up — Microsoft OAuth (In-App Form)
+### 4b. Sign Up — Google OAuth (In-App Form)
 
-### User Story
-As a new visitor on `app.usebubbles.com`, I want to sign up using my Microsoft account from the in-app signup form so that I can create an account via my work identity.
+#### Flow
+`app.usebubbles.com → Click "Continue with Google" → Google OAuth consent → Onboarding → Bubbles Home screen`
 
-### Flow
-`app.usebubbles.com signup page → Click "Continue with Microsoft" → Microsoft OAuth consent → Onboarding → Bubbles Home screen`
+#### Acceptance Criteria
+- [ ] The in-app signup form at `app.usebubbles.com` shows a **Continue with Google** button
+- [ ] Clicking it opens the Google OAuth consent flow
+- [ ] Completing OAuth takes the user through onboarding
+- [ ] After onboarding, the user lands on the Bubbles Home screen
 
-### Acceptance Criteria
-- [ ] The signup form at `app.usebubbles.com` displays a **Continue with Microsoft** button
-- [ ] Clicking the button opens a Microsoft OAuth consent popup or redirect
-- [ ] Completing the Microsoft OAuth flow redirects the user back to `app.usebubbles.com`
-- [ ] The user is taken through the onboarding flow after successful OAuth
-- [ ] After completing onboarding, the user lands on the Bubbles Home screen
-- [ ] The account is linked to the authenticated Microsoft / work email
-
-### Edge Cases
-- Closing the Microsoft OAuth popup without completing it must return the user to the signup form without errors
-- An existing Microsoft-linked account must result in login, not a duplicate account error
+#### Edge Cases
+- Closing the Google OAuth popup without completing must return the user to the signup form without errors
 
 ---
 
-## Feature 5: Sign Up — Name + Work Email (OTP Flow)
+### 4c. Sign Up — Microsoft OAuth (In-App Form)
 
-### User Story
-As a new visitor on `app.usebubbles.com`, I want to sign up using my name and work email so that I can create an account without using a social login.
+#### Flow
+`app.usebubbles.com → Click "Continue with Microsoft" → Microsoft OAuth consent → Onboarding → Bubbles Home screen`
 
-### Flow
-`app.usebubbles.com signup page → Enter Name + Work Email → Continue with email → Receive OTP email → Enter OTP → Onboarding → Bubbles Home screen`
+#### Acceptance Criteria
+- [ ] The in-app signup form at `app.usebubbles.com` shows a **Continue with Microsoft** button
+- [ ] Clicking it opens the Microsoft OAuth consent flow
+- [ ] Completing OAuth takes the user through onboarding
+- [ ] After onboarding, the user lands on the Bubbles Home screen
 
-### Acceptance Criteria
+#### Edge Cases
+- Closing the Microsoft OAuth popup without completing must return the user to the signup form without errors
+
+---
+
+### 4d. Sign Up — Name + Work Email (OTP Flow)
+
+#### Flow
+`app.usebubbles.com → Enter Name + Work Email → Continue with email → Receive OTP → Enter OTP → Onboarding → Bubbles Home screen`
+
+#### Acceptance Criteria
 - [ ] The signup form displays fields for **Name** and **Work Email**
-- [ ] A **Continue with email** button is present and enabled after both fields are filled
-- [ ] Submitting a valid name and work email sends a one-time passcode (OTP) to that email address
-- [ ] The user is shown an OTP entry screen after clicking Continue
+- [ ] Clicking **Continue with email** with valid inputs sends an OTP to the work email
+- [ ] The user is shown an OTP entry screen
 - [ ] Entering the correct OTP proceeds to the onboarding flow
 - [ ] Completing onboarding lands the user on the Bubbles Home screen
-- [ ] Entering an incorrect OTP displays a validation error and allows retry
-- [ ] The OTP expires after its valid window; an expired OTP shows an appropriate error
 
-### Edge Cases
-- Submitting with an empty Name field must show a validation error
-- Submitting with an empty Email field must show a validation error
-- Submitting with an invalid email format (e.g. `notanemail`) must show a format validation error
-- Submitting with a personal email domain (e.g. `@gmail.com`, `@yahoo.com`) may prompt the user to use a work email
-- Entering only whitespace in Name or Email fields must trigger validation errors
+#### Edge Cases
+- Empty Name field must show a validation error
+- Empty Email field must show a validation error
+- Invalid email format must show a format validation error
 
 ---
 
-## Feature 6: Sign Up — Didn't Get a Code? (Resend OTP)
+### 4e. Sign Up — Didn't Get a Code? (Resend OTP)
 
-### User Story
-As a user waiting for an OTP, I want to request the code again if I didn't receive it so that I can complete signup without being stuck.
+#### Flow
+`OTP entry screen → Click "Didn't get a code?" → New OTP sent to same email → Enter new OTP → Continue`
 
-### Flow
-`OTP entry screen → Click "Didn't get a code?" → OTP is resent to the same email → Enter new OTP → Continue`
-
-### Acceptance Criteria
+#### Acceptance Criteria
 - [ ] A **Didn't get a code?** link or button is visible on the OTP entry screen
-- [ ] Clicking it triggers a new OTP to be sent to the same email address
-- [ ] A confirmation message or toast indicates the new code has been sent
-- [ ] The newly sent OTP is valid and can be used to proceed
-- [ ] The previously issued OTP is invalidated after a resend (optional but ideal)
+- [ ] Clicking it sends a new OTP to the same email address
+- [ ] A confirmation message or toast confirms the new code has been sent
+- [ ] The new OTP is valid and allows the user to proceed
 
-### Edge Cases
-- Rapid repeated clicks on "Didn't get a code?" must not send excessive OTP emails (rate limiting)
-- The resend option should still be available if the user waits a long time on the OTP screen
+#### Edge Cases
+- Rapid repeated clicks must not trigger excessive OTP emails (rate limiting expected)
 
 ---
 
-## Feature 7: Sign Up — Change Email (During OTP Step)
+### 4f. Sign Up — Change Email (During OTP Step)
 
-### User Story
-As a user on the OTP entry screen, I want to change my email address if I entered the wrong one so that the OTP is sent to the correct inbox.
+#### Flow
+`OTP entry screen → Click "Change email" → Return to signup form → Enter new email → Continue with email → Receive new OTP → Enter OTP → Onboarding → Bubbles Home screen`
 
-### Flow
-`OTP entry screen → Click "Change email" → Return to signup form with email field editable → Enter new email → Continue with email → Receive new OTP → Enter OTP → Onboarding → Bubbles Home screen`
-
-### Acceptance Criteria
+#### Acceptance Criteria
 - [ ] A **Change email** link or button is visible on the OTP entry screen
-- [ ] Clicking it returns the user to the signup form (or makes the email field editable)
-- [ ] Previously entered Name is retained when returning to the form
+- [ ] Clicking it returns the user to the signup form with the email field editable
+- [ ] Previously entered **Name** is retained when returning to the form
 - [ ] Entering a new email and clicking Continue sends a fresh OTP to the new address
-- [ ] The original email's OTP is no longer valid after the email is changed
-- [ ] The user can complete signup successfully with the new email OTP
+- [ ] The user can complete the full signup flow with the new email
 
-### Edge Cases
-- Changing to the same email address must still issue a fresh OTP
-- Changing to an already-registered email should handle the conflict gracefully (login prompt or error)
+#### Edge Cases
+- Changing to the same email must still issue a fresh OTP
+- Changing to an already-registered email must handle the conflict gracefully (login prompt or clear error)
 
 ---
 
 ## Out of Scope
 
-- Password-based login (Bubbles uses passwordless / OAuth flows)
+- Password-based authentication (Bubbles uses passwordless / OAuth)
 - Account deletion or data export
-- In-app collaboration features (bubbles creation, sharing, commenting)
+- In-app collaboration features (bubble creation, sharing, commenting)
 - Billing and subscription management
 - Mobile native applications (iOS / Android)
 
@@ -184,14 +308,12 @@ As a user on the OTP entry screen, I want to change my email address if I entere
 
 ## Test Environment Notes
 
-| URL | Purpose |
-|-----|---------|
-| `https://usebubbles.com` | Marketing site — Google One-Tap signup |
-| `https://app.usebubbles.com` | Web app — all in-app signup and auth flows |
-
-### Credentials Strategy
-- OAuth flows (Google, Microsoft) require real test accounts; use environment variables:
-  - `BUBBLES_GOOGLE_EMAIL`, `BUBBLES_GOOGLE_PASSWORD`
-  - `BUBBLES_MS_EMAIL`, `BUBBLES_MS_PASSWORD`
-- Email OTP flow requires a real or disposable inbox accessible during the test run (e.g. Mailosaur, Mailinator, or a dedicated test email)
-  - `BUBBLES_TEST_EMAIL` — the work email used for OTP signup tests
+| Variable | Purpose |
+|----------|---------|
+| `BUBBLES_GOOGLE_EMAIL` | Google test account email |
+| `BUBBLES_GOOGLE_PASSWORD` | Google test account password |
+| `BUBBLES_MS_EMAIL` | Microsoft test account email |
+| `BUBBLES_MS_PASSWORD` | Microsoft test account password |
+| `BUBBLES_TEST_EMAIL` | Work email for OTP signup tests (use Mailosaur or similar) |
+| `BUBBLES_BASE_URL` | `https://app.usebubbles.com` (or staging equivalent) |
+| `BUBBLES_HOMEPAGE_URL` | `https://www.usebubbles.com` (or `http://link.usebubbles.com/staging-website`) |
