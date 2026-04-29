@@ -15,6 +15,7 @@ export default defineConfig({
     trace: 'on-first-retry',
     headless: false,
     ignoreHTTPSErrors: true,
+    storageState: undefined,
   },
   projects: [
     {
