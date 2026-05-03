@@ -11,6 +11,8 @@ test.describe('Login — Continue with Google', () => {
   test('should show Continue with Google button on the login page', async ({ loginPage }) => {
     await loginPage.goto();
     await expect(loginPage.continueWithGoogleButton).toBeVisible();
+    await expect(loginPage.continueWithMicrosoftButton).toBeVisible();
+    await expect(loginPage.logInLink).toBeVisible();
   });
 
   // --- Full OAuth flow (credentials required) ---
@@ -35,10 +37,15 @@ test.describe('Login — Continue with Google', () => {
       const oauthPage = new GoogleOAuthPage(googlePopup);
       await oauthPage.login(GOOGLE_EMAIL!, GOOGLE_PASSWORD!);
 
+      // Handle OAuth consent screen — appears on first login or after permission changes
+      const consentButton = googlePopup.getByRole('button', { name: /allow|continue/i });
+      if (await consentButton.isVisible({ timeout: 3_000 }).catch(() => false)) {
+        await consentButton.click();
+      }
+
       await googlePopup.waitForEvent('close', { timeout: 15_000 }).catch(() => {});
       await page.waitForURL(/app\.usebubbles\.com/, { timeout: 15_000 });
 
-      // Assert — URL and authenticated home screen are both present
       await expect(page).toHaveURL(/app\.usebubbles\.com/);
       await homePage.isLoaded();
     });
