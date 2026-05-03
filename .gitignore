@@ -1,5 +1,6 @@
 # Envirom=nment variables
 .env
+.env.bubbles
 
 
 # Playwright
