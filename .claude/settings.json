@@ -1,4 +1,10 @@
 {
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    }
+  },
   "allowedTools": [
     "mcp__playwright__browser_navigate",
     "mcp__playwright__browser_click",
