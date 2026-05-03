@@ -14,7 +14,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: process.env.BUBBLES_BASE_URL ?? 'https://app.usebubbles.com',
-    storageState: '.auth/user.json',
+    storageState: path.resolve(__dirname, '.auth/user.json'),
     trace: 'on-first-retry',
     headless: !!process.env.CI,
     ignoreHTTPSErrors: true,

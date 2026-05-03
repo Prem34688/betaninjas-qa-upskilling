@@ -4,9 +4,9 @@ test.describe('Login — Continue with Google', () => {
 
   // --- UI check — verify login page elements without auth ---
 
-  test('should show Continue with Google button on the login page', async ({ loginPage, page }) => {
-    // Override storageState: start unauthenticated for this test
-    await page.context().clearCookies();
+  test.use({ storageState: { cookies: [], origins: [] } });
+
+  test('should show Continue with Google button on the login page', async ({ loginPage }) => {
     await loginPage.goto();
 
     await expect(loginPage.continueWithGoogleButton).toBeVisible();
