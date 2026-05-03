@@ -6,6 +6,7 @@ dotenv.config({ path: path.resolve(__dirname, '../.env.bubbles') });
 
 export default defineConfig({
   testDir: './tests',
+  globalSetup: './global.setup.ts',
   fullyParallel: false,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
@@ -13,6 +14,7 @@ export default defineConfig({
   reporter: 'html',
   use: {
     baseURL: process.env.BUBBLES_BASE_URL ?? 'https://app.usebubbles.com',
+    storageState: '.auth/user.json',
     trace: 'on-first-retry',
     headless: !!process.env.CI,
     ignoreHTTPSErrors: true,

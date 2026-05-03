@@ -1,54 +1,27 @@
 import { test, expect } from '../fixtures';
-import { GoogleOAuthPage } from '../pages/GoogleOAuthPage';
-
-const GOOGLE_EMAIL = process.env.BUBBLES_GOOGLE_EMAIL;
-const GOOGLE_PASSWORD = process.env.BUBBLES_GOOGLE_PASSWORD;
 
 test.describe('Login — Continue with Google', () => {
 
-  // --- UI check (no credentials needed) ---
+  // --- UI check — verify login page elements without auth ---
 
-  test('should show Continue with Google button on the login page', async ({ loginPage }) => {
+  test('should show Continue with Google button on the login page', async ({ loginPage, page }) => {
+    // Override storageState: start unauthenticated for this test
+    await page.context().clearCookies();
     await loginPage.goto();
+
     await expect(loginPage.continueWithGoogleButton).toBeVisible();
     await expect(loginPage.continueWithMicrosoftButton).toBeVisible();
     await expect(loginPage.logInLink).toBeVisible();
   });
 
-  // --- Full OAuth flow (credentials required) ---
+  // --- Authenticated — verify home screen loads after Google login ---
 
-  test.describe('OAuth flow', () => {
-    test.beforeEach(() => {
-      if (!GOOGLE_EMAIL || !GOOGLE_PASSWORD) {
-        test.skip(true, 'Missing BUBBLES_GOOGLE_EMAIL / BUBBLES_GOOGLE_PASSWORD env vars');
-      }
-    });
+  test('should land on Bubbles Home screen after Google login', async ({ homePage, page }) => {
+    // storageState is pre-loaded by global.setup.ts — already authenticated
+    await page.goto('/');
 
-    test('should land on Bubbles Home screen after Google login', async ({ loginPage, homePage, page, context }) => {
-      await loginPage.goto();
-
-      const [googlePopup] = await Promise.all([
-        context.waitForEvent('page'),
-        loginPage.clickContinueWithGoogle(),
-      ]);
-
-      await googlePopup.waitForLoadState('domcontentloaded');
-
-      const oauthPage = new GoogleOAuthPage(googlePopup);
-      await oauthPage.login(GOOGLE_EMAIL!, GOOGLE_PASSWORD!);
-
-      // Handle OAuth consent screen — appears on first login or after permission changes
-      const consentButton = googlePopup.getByRole('button', { name: /allow|continue/i });
-      if (await consentButton.isVisible({ timeout: 3_000 }).catch(() => false)) {
-        await consentButton.click();
-      }
-
-      await googlePopup.waitForEvent('close', { timeout: 15_000 }).catch(() => {});
-      await page.waitForURL(/app\.usebubbles\.com/, { timeout: 15_000 });
-
-      await expect(page).toHaveURL(/app\.usebubbles\.com/);
-      await homePage.isLoaded();
-    });
+    await expect(page).toHaveURL(/app\.usebubbles\.com/);
+    await homePage.isLoaded();
   });
 
   // --- Skipped: Microsoft login (needs MS credentials) ---
