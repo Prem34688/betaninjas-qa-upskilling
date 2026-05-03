@@ -9,7 +9,8 @@ export class GoogleOAuthPage {
   constructor(page: Page) {
     this.page = page;
     this.emailInput = page.locator('input[type="email"]');
-    this.passwordInput = page.locator('input[type="password"]');
+    // Google renders a hidden autofill input alongside the real one — exclude it
+    this.passwordInput = page.locator('input[type="password"]:not([aria-hidden="true"])');
     this.nextButton = page.getByRole('button', { name: /next/i });
   }
 
