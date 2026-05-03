@@ -10,7 +10,7 @@ export class LoginPage {
   }
 
   async goto() {
-    await this.page.goto('https://app.usebubbles.com');
+    await this.page.goto('/');
   }
 
   async clickContinueWithGoogle() {
