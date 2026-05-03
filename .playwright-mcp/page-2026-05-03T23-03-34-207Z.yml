@@ -1,0 +1,59 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+    - generic [ref=e5]:
+      - img [ref=e8]
+      - heading "This link was not found" [level=2] [ref=e13]
+      - generic [ref=e14]:
+        - text: Contact
+        - link "hello@usebubbles.com" [ref=e15] [cursor=pointer]:
+          - /url: mailto:hello@usebubbles.com
+        - text: if you need assistance.
+  - generic:
+    - generic:
+      - generic:
+        - button:
+          - img
+        - generic:
+          - generic:
+            - generic:
+              - img
+          - paragraph: "You are entering Anonymous's bubble:"
+          - heading "Untitled bubble" [level=2]
+        - generic:
+          - generic:
+            - generic:
+              - img
+              - generic: Eliminate meetings with bubbles
+              - generic: Send and receive short video messages designed to get a response - it's teamwork on your time.
+            - generic:
+              - img
+              - generic: This bubble is just an FYI for you
+              - generic: You're encouraged to comment on this bubble, but it's not required in order to move it to Done.
+        - button "Let's go!"
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - generic:
+              - heading "Welcome! Let’s connect your calendar ✨" [level=2]
+              - generic: To let your AI Notetaker automatically join meetings and add notes, connect your Google or Outlook calendar.
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic: Connect Google Calendar
+                - generic:
+                  - generic:
+                    - img
+                  - generic: Connect Outlook Calendar
+                - button "Skip for now - connect my calendar later"

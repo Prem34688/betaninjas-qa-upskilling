@@ -1,0 +1,53 @@
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - progressbar [ref=e6]
+    - main [ref=e14]:
+      - generic [ref=e15]:
+        - generic [ref=e17]:
+          - generic [ref=e18]:
+            - img [ref=e20]
+            - generic [ref=e25]: Sign in with Google
+          - img "Bubbles" [ref=e26]
+        - generic [ref=e27]:
+          - heading "You’re signing back in to Bubbles" [level=1] [ref=e28]
+          - link "testprem72707@gmail.com selected. Switch account" [ref=e30] [cursor=pointer]:
+            - generic [ref=e33]: testprem72707@gmail.com
+            - img [ref=e35]
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - text: Review Bubbles’s
+          - link "Privacy Policy" [ref=e49] [cursor=pointer]:
+            - /url: https://www.usebubbles.com/privacy
+          - text: and
+          - link "Terms of Service" [ref=e50] [cursor=pointer]:
+            - /url: https://www.usebubbles.com/privacy
+          - text: to understand how Bubbles will process and protect your data.
+        - generic [ref=e51]:
+          - text: To make changes at any time, go to your
+          - link "Google Account" [ref=e52] [cursor=pointer]:
+            - /url: https://myaccount.google.com/connections#filter=4
+          - text: .
+        - generic [ref=e53]:
+          - text: Learn more about
+          - link "Sign in with Google" [ref=e54] [cursor=pointer]:
+            - /url: https://support.google.com/accounts/answer/12921417?sjid=1919169284593837430-NC
+          - text: .
+      - generic [ref=e57]:
+        - button "Cancel" [ref=e61]: Cancel
+        - button "Continue" [ref=e67]: Continue
+  - contentinfo [ref=e73]:
+    - combobox "Change language English (United States)" [ref=e77] [cursor=pointer]:
+      - generic:
+        - generic: English (United States)
+      - generic:
+        - img
+    - list [ref=e79]:
+      - listitem [ref=e80]:
+        - link "Help" [ref=e81] [cursor=pointer]:
+          - /url: https://support.google.com/accounts?hl=en&p=account_iph
+      - listitem [ref=e82]:
+        - link "Privacy" [ref=e83] [cursor=pointer]:
+          - /url: https://accounts.google.com/TOS?loc=NP&hl=en&privacy=true
+      - listitem [ref=e84]:
+        - link "Terms" [ref=e85] [cursor=pointer]:
+          - /url: https://accounts.google.com/TOS?loc=NP&hl=en

@@ -1,0 +1,85 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img
+    - img [ref=e7]
+  - generic:
+    - generic:
+      - generic:
+        - button:
+          - img
+        - generic:
+          - generic:
+            - generic:
+              - img
+          - paragraph: "You are entering Anonymous's bubble:"
+          - heading "Untitled bubble" [level=2]
+        - generic:
+          - generic:
+            - generic:
+              - img
+              - generic: Eliminate meetings with bubbles
+              - generic: Send and receive short video messages designed to get a response - it's teamwork on your time.
+            - generic:
+              - img
+              - generic: This bubble is just an FYI for you
+              - generic: You're encouraged to comment on this bubble, but it's not required in order to move it to Done.
+        - button "Let's go!"
+  - generic:
+    - generic:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - img
+            - generic:
+              - heading "Welcome! Let’s connect your calendar ✨" [level=2]
+              - generic: To let your AI Notetaker automatically join meetings and add notes, connect your Google or Outlook calendar.
+              - generic:
+                - generic:
+                  - generic:
+                    - img
+                  - generic: Connect Google Calendar
+                - generic:
+                  - generic:
+                    - img
+                  - generic: Connect Outlook Calendar
+                - button "Skip for now - connect my calendar later"
+  - dialog [ref=e12]:
+    - generic [ref=e13]:
+      - img [ref=e15]
+      - generic [ref=e27]:
+        - heading "Create an account" [level=2] [ref=e28]
+        - generic [ref=e29]: You're just one minute away from automated meeting notes
+        - generic [ref=e30]:
+          - generic [ref=e31] [cursor=pointer]:
+            - img [ref=e33]
+            - generic: Continue with Google
+          - generic [ref=e38] [cursor=pointer]:
+            - img [ref=e40]
+            - generic: Continue with Microsoft
+        - generic [ref=e46]: or
+        - generic [ref=e47]:
+          - textbox "Name" [ref=e48]
+          - textbox "Work email" [ref=e49]
+          - button "Continue with email" [disabled] [ref=e50]
+        - generic [ref=e51]:
+          - text: Have an account?
+          - button "Log in" [ref=e52] [cursor=pointer]
+        - generic [ref=e53]:
+          - text: By signing up you agree to Bubbles’
+          - button "Terms & Conditions" [ref=e54] [cursor=pointer]
+          - text: and
+          - button "Privacy Policy" [ref=e55] [cursor=pointer]
+      - generic [ref=e60]:
+        - generic [ref=e61]: I love using Bubbles. It cuts down on meeting time, and the ones I do have are more productive and always at my fingertips for review.
+        - generic [ref=e62]:
+          - generic [ref=e63]: Jack Altman
+          - generic [ref=e64]:
+            - text: Founder & Chairman,
+            - img [ref=e65]
