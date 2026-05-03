@@ -3,6 +3,11 @@ import { test, expect } from '../fixtures';
 test.describe('Login — Continue with Google', () => {
 
   // --- UI check — verify login page elements without auth ---
+<<<<<<< HEAD
+=======
+
+  test.use({ storageState: { cookies: [], origins: [] } });
+>>>>>>> e8d4910de3e070637743ca551262387ec3008d62
 
   test('should show Continue with Google button on the login page', async ({ loginPage, page }) => {
     // Override storageState: start unauthenticated for this test
