@@ -11,9 +11,10 @@ export class LoginPage {
 
   constructor(page: Page) {
     this.page = page;
-    // Both OAuth buttons are styled divs, not semantic buttons — use exact text match
-    this.continueWithGoogleButton = page.getByText('Continue with Google', { exact: true });
-    this.continueWithMicrosoftButton = page.getByText('Continue with Microsoft', { exact: true });
+    // OAuth buttons are styled-component divs — text lives in a hidden inner div,
+    // so we locate by text then step up to the visible clickable parent.
+    this.continueWithGoogleButton = page.getByText('Continue with Google', { exact: true }).locator('xpath=..');
+    this.continueWithMicrosoftButton = page.getByText('Continue with Microsoft', { exact: true }).locator('xpath=..');
     this.nameInput = page.getByPlaceholder('Name');
     this.workEmailInput = page.getByPlaceholder('Work email');
     this.continueWithEmailButton = page.getByRole('button', { name: 'Continue with email' });
